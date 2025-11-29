@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TicketMaster - Dashboard</title>
+    <link rel="stylesheet" href="dashboard.css">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-brand">
+                <h1>🎫 TicketMaster</h1>
+            </div>
+            <div class="nav-user">
+                <span id="userName" class="user-name"></span>
+                <button onclick="handleLogout()" class="btn-logout">Logout</button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <div class="container">
+        <!-- User Info Card -->
+        <div class="welcome-card">
+            <h2>Welcome back, <span id="userFullName"></span>!</h2>
+            <p class="user-role">Role: <span id="userRole"></span></p>
+            <div class="session-info">
+                <p>Active Sessions: <span id="sessionCount">Loading...</span> / 5</p>
+            </div>
+        </div>
+
+        <!-- Tabs -->
+        <div class="tabs">
+            <button class="tab-btn active" onclick="showTab('events')">Browse Events</button>
+            <button class="tab-btn" onclick="showTab('bookings')">My Bookings</button>
+            <button class="tab-btn" onclick="showTab('venues')">Venues</button>
+        </div>
+
+        <!-- Events Tab -->
+        <div id="eventsTab" class="tab-content active">
+            <h3 class="section-title">Upcoming Events</h3>
+            <div id="eventsList" class="cards-grid">
+                <div class="loading">Loading events...</div>
+            </div>
+        </div>
+
+        <!-- Bookings Tab -->
+        <div id="bookingsTab" class="tab-content">
+            <h3 class="section-title">My Bookings</h3>
+            <div id="bookingsList" class="cards-grid">
+                <div class="loading">Loading bookings...</div>
+            </div>
+        </div>
+
+        <!-- Venues Tab -->
+        <div id="venuesTab" class="tab-content">
+            <h3 class="section-title">Available Venues</h3>
+            <div id="venuesList" class="cards-grid">
+                <div class="loading">Loading venues...</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Alert Messages -->
+    <div id="alertBox" class="alert" style="display: none;"></div>
+
+    <script src="dashboard-app.js"></script>
+</body>
+</html>

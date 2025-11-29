@@ -1,0 +1,39 @@
+version: '3.8'
+
+services:
+  # Simulates AWS RDS (MySQL)
+  mysql-db:
+    image: mysql:8.0
+    environment:
+      MYSQL_ROOT_PASSWORD: rootpassword
+      MYSQL_DATABASE: ticketdb
+    ports:
+      - "3306:3306"
+
+  # Simulates AWS ElastiCache (Redis)
+  redis-cache:
+    image: redis:alpine
+    ports:
+      - "6379:6379"
+
+  # phpMyAdmin - MySQL Web UI
+  phpmyadmin:
+    image: phpmyadmin:latest
+    environment:
+      PMA_HOST: mysql-db
+      PMA_USER: root
+      PMA_PASSWORD: rootpassword
+    ports:
+      - "8080:80"
+    depends_on:
+      - mysql-db
+
+  # Redis Commander - Redis Web UI
+  redis-commander:
+    image: rediscommander/redis-commander:latest
+    environment:
+      - REDIS_HOSTS=local:redis-cache:6379
+    ports:
+      - "8081:8081"
+    depends_on:
+      - redis-cache

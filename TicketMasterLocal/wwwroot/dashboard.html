@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TicketMaster System Dashboard</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 40px 20px;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        h1 {
+            text-align: center;
+            color: white;
+            margin-bottom: 40px;
+            font-size: 2.5em;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 25px;
+            margin-bottom: 40px;
+        }
+        .card {
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            transition: transform 0.3s, box-shadow 0.3s;
+            cursor: pointer;
+        }
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 40px rgba(0,0,0,0.3);
+        }
+        .card h2 {
+            color: #667eea;
+            margin-bottom: 15px;
+            font-size: 1.5em;
+        }
+        .card p {
+            color: #666;
+            margin-bottom: 20px;
+            line-height: 1.6;
+        }
+        .btn {
+            display: inline-block;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 12px 30px;
+            text-decoration: none;
+            border-radius: 25px;
+            transition: opacity 0.3s;
+            font-weight: bold;
+        }
+        .btn:hover {
+            opacity: 0.9;
+        }
+        .status {
+            background: #f8f9fa;
+            border-radius: 10px;
+            padding: 20px;
+            margin-top: 20px;
+        }
+        .status h3 {
+            color: #333;
+            margin-bottom: 15px;
+        }
+        .status-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 10px;
+            border-bottom: 1px solid #ddd;
+        }
+        .status-item:last-child {
+            border-bottom: none;
+        }
+        .badge {
+            background: #28a745;
+            color: white;
+            padding: 3px 10px;
+            border-radius: 12px;
+            font-size: 0.85em;
+        }
+        .icon {
+            font-size: 2em;
+            margin-bottom: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🎫 TicketMaster System Dashboard</h1>
+
+        <div class="grid">
+            <div class="card" onclick="window.open('http://localhost:5277/swagger', '_blank')">
+                <div class="icon">🚀</div>
+                <h2>API Documentation</h2>
+                <p>Interactive Swagger UI for testing booking endpoints and viewing responses.</p>
+                <a href="http://localhost:5277/swagger" target="_blank" class="btn">Open Swagger UI</a>
+            </div>
+
+            <div class="card" onclick="window.open('http://localhost:8080', '_blank')">
+                <div class="icon">🗄️</div>
+                <h2>MySQL Database</h2>
+                <p>phpMyAdmin interface to view seat inventory and booking records.</p>
+                <a href="http://localhost:8080" target="_blank" class="btn">Open phpMyAdmin</a>
+                <div style="margin-top: 15px; color: #999; font-size: 0.9em;">
+                    Login: root / rootpassword
+                </div>
+            </div>
+
+            <div class="card" onclick="window.open('http://localhost:8081', '_blank')">
+                <div class="icon">⚡</div>
+                <h2>Redis Cache & Locks</h2>
+                <p>Redis Commander to monitor distributed locks and cache data.</p>
+                <a href="http://localhost:8081" target="_blank" class="btn">Open Redis Commander</a>
+            </div>
+        </div>
+
+        <div class="status">
+            <h3>📊 System Status</h3>
+            <div class="status-item">
+                <span><strong>API Server</strong></span>
+                <span class="badge">Running</span>
+            </div>
+            <div class="status-item">
+                <span><strong>MySQL Database</strong></span>
+                <span class="badge">Running</span>
+            </div>
+            <div class="status-item">
+                <span><strong>Redis Cache</strong></span>
+                <span class="badge">Running</span>
+            </div>
+            <div class="status-item">
+                <span><strong>Docker Containers</strong></span>
+                <span class="badge">4 Active</span>
+            </div>
+        </div>
+
+        <div class="status" style="margin-top: 20px;">
+            <h3>🔗 Quick API Tests</h3>
+            <div style="margin-top: 15px;">
+                <button onclick="getSeats()" class="btn" style="margin-right: 10px; cursor: pointer; border: none;">Get All Seats</button>
+                <button onclick="bookSeat()" class="btn" style="cursor: pointer; border: none;">Book Random Seat</button>
+            </div>
+            <pre id="result" style="margin-top: 20px; background: #f4f4f4; padding: 15px; border-radius: 8px; overflow-x: auto; max-height: 300px;"></pre>
+        </div>
+    </div>
+
+    <script>
+        async function getSeats() {
+            const result = document.getElementById('result');
+            result.textContent = 'Loading...';
+            try {
+                const response = await fetch('http://localhost:5277/api/ticket/seats');
+                const data = await response.json();
+                result.textContent = JSON.stringify(data, null, 2);
+            } catch (error) {
+                result.textContent = 'Error: ' + error.message;
+            }
+        }
+
+        async function bookSeat() {
+            const result = document.getElementById('result');
+            const seats = ['A1', 'A2'];
+            const randomSeat = seats[Math.floor(Math.random() * seats.length)];
+            const randomUser = 'User' + Math.floor(Math.random() * 1000);
+
+            result.textContent = `Attempting to book ${randomSeat} for ${randomUser}...`;
+            try {
+                const response = await fetch(`http://localhost:5277/api/ticket/book?seatId=${randomSeat}&userId=${randomUser}`, {
+                    method: 'POST'
+                });
+                const text = await response.text();
+                result.textContent = `Status: ${response.status}\nResponse: ${text}`;
+            } catch (error) {
+                result.textContent = 'Error: ' + error.message;
+            }
+        }
+    </script>
+</body>
+</html>

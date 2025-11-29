@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TicketMaster - Login</title>
+    <link rel="stylesheet" href="auth.css">
+</head>
+<body>
+    <div class="container">
+        <div class="auth-card">
+            <div class="header">
+                <h1>🎫 TicketMaster</h1>
+                <p>Your Premier Ticket Booking Platform</p>
+            </div>
+
+            <!-- Login Form -->
+            <div id="loginForm" class="form-container">
+                <h2>Welcome Back</h2>
+                <form onsubmit="handleLogin(event)">
+                    <div class="form-group">
+                        <label for="loginEmail">Email</label>
+                        <input type="email" id="loginEmail" placeholder="john.doe@email.com" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="loginPassword">Password</label>
+                        <input type="password" id="loginPassword" placeholder="Enter your password" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="deviceName">Device Name (Optional)</label>
+                        <input type="text" id="deviceName" placeholder="My Laptop">
+                    </div>
+                    <button type="submit" class="btn btn-primary">Sign In</button>
+                    <div class="form-footer">
+                        <p>Don't have an account? <a href="#" onclick="showRegister()">Sign Up</a></p>
+                    </div>
+                </form>
+            </div>
+
+            <!-- Register Form -->
+            <div id="registerForm" class="form-container" style="display: none;">
+                <h2>Create Account</h2>
+                <form onsubmit="handleRegister(event)">
+                    <div class="form-group">
+                        <label for="regFullName">Full Name</label>
+                        <input type="text" id="regFullName" placeholder="John Doe" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="regEmail">Email</label>
+                        <input type="email" id="regEmail" placeholder="john.doe@email.com" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="regPhone">Phone Number (Optional)</label>
+                        <input type="tel" id="regPhone" placeholder="+1-555-0101">
+                    </div>
+                    <div class="form-group">
+                        <label for="regPassword">Password</label>
+                        <input type="password" id="regPassword" placeholder="Min. 8 characters" required minlength="8">
+                    </div>
+                    <button type="submit" class="btn btn-primary">Create Account</button>
+                    <div class="form-footer">
+                        <p>Already have an account? <a href="#" onclick="showLogin()">Sign In</a></p>
+                    </div>
+                </form>
+            </div>
+
+            <!-- Test Credentials -->
+            <div class="test-credentials">
+                <details>
+                    <summary>🧪 Test Credentials</summary>
+                    <div class="credentials-list">
+                        <p><strong>Customer:</strong> john.doe@email.com / Password123!</p>
+                        <p><strong>Admin:</strong> admin@ticketmaster.com / Admin123!</p>
+                    </div>
+                </details>
+            </div>
+        </div>
+
+        <!-- Alert Messages -->
+        <div id="alertBox" class="alert" style="display: none;"></div>
+    </div>
+
+    <script src="auth.js"></script>
+</body>
+</html>
